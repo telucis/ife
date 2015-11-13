@@ -1,6 +1,6 @@
 window.onload=function(){
-	var oInput=document.getElementsByTagName("input")[0];
-	var oBtn=document.getElementsByTagName("input")[1];
+	var oInput=document.getElementById("hobby");
+	var oBtn=document.getElementsByTagName("input")[0];
 	var oP=document.getElementsByTagName("p")[0];
 	var oArr=[];
 	function trim(string){
