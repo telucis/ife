@@ -23,9 +23,9 @@ window.onload=function(){
 		return result;
 	}
 	oBtn.onclick=function(){
-		//console.log(oInput.value.split(","));
+		//console.log(oInput.value.split(","));  /
 		oArr=[]
-		var oBrr=oInput.value.split(',');
+		var oBrr=oInput.value.split(/\,|\;|\、|\，|\s/g);
 		var oCrr=[];
 		for(var i=0;i<oBrr.length;i++){
 			oBrr[i]=trim(oBrr[i]);
