@@ -8,7 +8,7 @@ window.onload=function(){
 		var mounth=oDate.value.match(/\d{2}(?=\-\d{2}$)/);
 		var date=oDate.value.match(/\d{2}$/);
 		//oTime.innerHTML=year+' '+mounth+' '+date;
-		var date1=Date.UTC(year-0,mounth-1,date-0,23,00,00);
+		var date1=new Date(year,mounth-1,date);
 		var date2=Date.now();
 		oTime.innerHTML=Date.now()/(1000*3600)+'<br>'+date1/(1000*3600);
 		/*
