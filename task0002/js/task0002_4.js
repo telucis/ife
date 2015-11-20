@@ -1,6 +1,6 @@
 window.onload=function(){
 	var receive=document.getElementsByTagName('input')[0];
-	var show=false;
+	var show=true;
 	var xmlhttp=new XMLHttpRequest();
 	receive.onclick=function(){
 		receive.value='';
@@ -10,7 +10,6 @@ window.onload=function(){
 			xmlhttp.send();
 			show=true;
 		}else{
-			
 			show=false;
 		}
 		
