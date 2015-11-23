@@ -6,14 +6,24 @@
 	<style>
 		html{height:100%}
 		body{height:100%}
-		body,div,ul,li,img,a,p{padding: 0;margin: 0;}
+		body,div,ul,li,img,a,p,header,aside,section,article,footer{padding: 0;margin: 0;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;}
 		body{font-family: '微软雅黑'}
-		.head{position: fixed;width: 100%;background: #ddd;height: 60px ;color: #8F8F8F;line-height: 60px;padding-left: 20px;z-index: 1;}
-		.manage{position: absolute;width: 200px;height:100%;background: #F2F2F2;margin-top: 60px;padding: 0 0 0 20px;font-size: 15px;line-height: 25px;border:1px solid #ccc;}
-		.manage footer{position: fixed;left: 0;bottom: 0;height: 60px;line-height: 60px;background: #eee;width: 200px;padding-left: 20px;border:1px solid #ccc;}
-		.main aside{position: relative;width: 200px;height: 100%;}
-		.main header{position: fixed;top: 0;height: 60px;background:#eee; }
-		.main footer{position: fixed;bottom: 0;height: 60px;background:#eee;}
+		.manage,.manage footer,.main aside,.main header,.main footer{border-right:1px solid #ccc;border-bottom: 1px solid #ccc;}
+		.head{position: fixed;width: 100%;background: #ddd;height: 60px ;color: #8F8F8F;line-height: 60px;padding-left: 20px;z-index: 1;
+			}
+		.manage{position: absolute;top: 60px;width: 200px;height:100%;background: #F2F2F2;padding-left:20px;font-size: 15px;line-height: 25px;}
+		.manage footer{position: fixed;left: 0;bottom: 0;height: 60px;line-height: 60px;background: #eee;width: 200px;padding-left: 20px;border-top: 1px solid #ccc;}
+		.manage footer span{cursor: pointer;}
+		.main{position: absolute;top: 60px;left: 200px;width: 200px;height: 100%;}
+		.main aside{position: absolute;width: 200px;height: 100%;}
+		.main header{position: fixed;height: 60px;width: 200px;background:#eee;line-height: 60px; }
+		.main header span{cursor: pointer;font-size: 14px;margin-left: 15px;border: 1px solid #ccc;border-radius: 5px;padding: 2px;}
+		.main header span.active{background: #fff;}
+		.main footer{position: fixed;bottom: 0;height: 60px;width: 200px;background:#eee;border-top: 1px solid #ccc; padding-left: 20px;line-height: 60px;}
+		.main footer span{cursor: pointer;}
 	</style>
 	<script>
 		window.onload=function(){
@@ -26,18 +36,14 @@
 	<aside class='manage'>
 		<span>所有任务</span>
 		<ul>分类列表</ul>
-		<footer>
-			新增分类
-		</footer>
+		<footer><span>新增分类</span></footer>
 	</aside>
 	<article class='main'>
 		<aside>
-			<header></header>
-			<footer></footer>
+			<header><span class='active'>所有</span><span>未完成</span><span>已完成</span></header>
+			<footer><span>新增任务</span></footer>
 		</aside>
-		<section>
-			
-		</section>
+		<section></section>
 	</article>
 </body>
 </html>
