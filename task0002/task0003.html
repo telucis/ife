@@ -14,20 +14,120 @@
 		.manage,.manage footer,.main aside,.main header,.main footer{border-right:1px solid #ccc;border-bottom: 1px solid #ccc;}
 		.head{position: fixed;width: 100%;background: #ddd;height: 60px ;color: #8F8F8F;line-height: 60px;padding-left: 20px;z-index: 1;
 			}
-		.manage{position: absolute;top: 60px;width: 200px;height:100%;background: #F2F2F2;padding-left:20px;font-size: 15px;line-height: 25px;}
+		.manage{position: absolute;margin: 60px 0 60px 0;top: 0;width: 200px;height:100%;background: #F2F2F2;padding-left:20px;font-size: 15px;line-height: 25px;}
+		.manage ul li{cursor: pointer;}
+		.manage ul li:hover{background: #ddd;}
+		.manage ul li.active{background: #ddd;}
 		.manage footer{position: fixed;left: 0;bottom: 0;height: 60px;line-height: 60px;background: #eee;width: 200px;padding-left: 20px;border-top: 1px solid #ccc;}
-		.manage footer span{cursor: pointer;}
-		.main{position: absolute;top: 60px;left: 200px;width: 200px;height: 100%;}
+		.manage footer span{cursor: pointer;margin-right: 20px;}
+		.main{position: absolute;margin: 60px 0 60px 0;top: 0;left: 200px;width: 200px;height: 100%;}
 		.main aside{position: absolute;width: 200px;height: 100%;}
 		.main header{position: fixed;height: 60px;width: 200px;background:#eee;line-height: 60px; }
 		.main header span{cursor: pointer;font-size: 14px;margin-left: 15px;border: 1px solid #ccc;border-radius: 5px;padding: 2px;}
 		.main header span.active{background: #fff;}
 		.main footer{position: fixed;bottom: 0;height: 60px;width: 200px;background:#eee;border-top: 1px solid #ccc; padding-left: 20px;line-height: 60px;}
 		.main footer span{cursor: pointer;}
+		.popup{position: absolute;top: 0;left: 0;height: 100%;width: 100%;background: #000;opacity: 0.3;z-index: 10;display: none;}
+		.popup div{position: absolute;top: 50%;left: 50%;height: 300px;width: 400px;margin-left: -200px;margin-top: -150px;background: #fff;border-radius: 10px;padding: 40px;font-size: 20px;}
+		.popup div #newclass,.popup div #newtask{width: 300px;height: 50px;line-height: 50px;font-size: 30px;margin: 10px 0 30px 0;border-radius: 10px;}
+		.popup div .btn{width: 100px;height: 40px;border-radius: 10px;float: right;margin-right: 10px;cursor: pointer;background: #c8c;font-size: 20px;font-family: '微软雅黑'}
+		.popup div .btn:hover{background: #a6a;}
+		.popup div .exit{position: absolute;right: 20px;top: 10px;font-size: 30px;cursor: pointer;}
+		.popup div .exit:hover{color: #c00;}
 	</style>
 	<script>
 		window.onload=function(){
+			var addclass=document.getElementById('addclass');
+			var addtask=document.getElementById('addtask');
+			var clearclass=document.getElementById('clearclass');
+			var popup=document.getElementsByClassName('popup');
+			var exit=document.getElementsByClassName('exit');
+			var confirm=document.getElementsByClassName('confirm');
+			var cancel=document.getElementsByClassName('cancel');
+			var newclass=document.getElementById('newclass');
+			var newtask=document.getElementById('newtask');
+			//验证分类唯一性
+			function unique(arr){
+				var temp=[];
+				for(var i=0;i<arr.length;i++){
+					var flag=true;
+					for(var j=0;j<temp.length;j++){
+						if(temp[j]==arr[i]){
+							flag=false;
+							continue;
+						}
+					}
+					arr[i] && flag==true && temp.push(arr[i]);
+				}
+				return temp;
+			}
+			//本地存储保存分类
+			if(localStorage.newclass){
+				var storage=unique(localStorage.newclass.split(/\s/));
+				for(var i=0;i<storage.length;i++){
+					var storageLi=document.createElement('li');
+					storageLi.innerHTML=storage[i];
+					document.getElementsByTagName('ul')[0].appendChild(storageLi);
+				}
+			}else{localStorage.newclass='';}
+			
+			//弹出层效果
+			addclass.onclick=function(){
+				popup[0].style.display="block";
+			}
+			addtask.onclick=function(){
+				popup[1].style.display="block";
+			}
+			clearclass.onclick=function(){
+				confirm("删除所有分类？") && function(){
+					for(var i=mylist.length-1;i>0;i--){
+						mylist[i].remove();
+					}
+					localStorage.newclass='';	
+				}()
+			}
+			for(var i=0;i<exit.length;i++){
+				exit[i].index=i;
+				exit[i].onclick=function(){
+					popup[this.index].style.display='none';
+				}
+			}
+			for(var i=0;i<cancel.length;i++){
+				cancel[i].index=i;
+				cancel[i].onclick=function(){
+					popup[this.index].style.display='none';
+				}
+			}
+			confirm[0].onclick=function(){				
+				for(var i=0;i<mylist.length;i++){
+					if(newclass.value==mylist[i].innerHTML){
+						alert('这个分类已存在，换一个吧！');
+						newclass.value='';
+						return false;
+					}
+				}
+				var oli=document.createElement('li');
+				oli.innerHTML=newclass.value;
+				newclass.value='';
+				document.getElementsByTagName('ul')[0].appendChild(oli);
+				popup[0].style.display='none';
+				localStorage.newclass=localStorage.newclass+oli.innerHTML+' ';
+				mylist=document.getElementsByClassName('manage')[0].getElementsByTagName('li');
+				oli.addEventListener('click',mylistFouce,false);
+			}
 
+			//管理栏效果
+			var mylist=document.getElementsByClassName('manage')[0].getElementsByTagName('li');
+
+			function mylistFouce(){
+				for(var j in mylist){mylist[j].className=''}
+				this.className='active';
+			}
+			for(var i=0;i<mylist.length;i++){
+				mylist[i].addEventListener('click',mylistFouce,false);				
+			}
+
+			//localStorage.clear();
 		}
 	</script>
 </head>
@@ -35,15 +135,35 @@
 	<header class='head'>GTD Tools</header>
 	<aside class='manage'>
 		<span>所有任务</span>
-		<ul>分类列表</ul>
-		<footer><span>新增分类</span></footer>
+		<ul>分类列表
+			<li>默认分类</li>
+		</ul>
+		<footer><span id='addclass'>新增分类</span><span id='clearclass'>清除分类</span></footer>
 	</aside>
 	<article class='main'>
 		<aside>
 			<header><span class='active'>所有</span><span>未完成</span><span>已完成</span></header>
-			<footer><span>新增任务</span></footer>
+			<footer><span id='addtask'>新增任务</span></footer>
 		</aside>
 		<section></section>
 	</article>
-</body>
+	<div class="popup">
+		<div>
+			<p>新增分类</p><hr>
+			<p>分类标题</p>
+			<input type="text" id='newclass'><br>
+			<button class="btn cancel">取消</button><button class="btn confirm">确定</button>
+			<span class="exit">×</span>
+		</div>
+	</div>
+	<div class="popup">
+		<div>
+			<p>新增任务</p><hr>
+			<p>任务标题</p>
+			<input type="text" id='newtask'><br>
+			<button class="btn cancel">取消</button><button class="btn confirm">确定</button>
+			<span class="exit">×</span>
+		</div>
+	</div>
+</body> 
 </html>
